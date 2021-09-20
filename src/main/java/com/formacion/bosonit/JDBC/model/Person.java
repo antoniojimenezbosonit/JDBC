@@ -1,6 +1,7 @@
 package com.formacion.bosonit.JDBC.model;
 
 
+import com.formacion.bosonit.JDBC.model.DTO.PersonInputDTO;
 import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,5 +43,20 @@ public class Person {
     Date created_date;
     String imagen_url;
     Date termination_date;
+
+    public Person(PersonInputDTO p){
+        this.id_person = p.getId_person();
+        this.user = p.getUser();
+        this.password = p.getPassword();
+        this.name = p.getName();
+        this.surname = p.getSurname();
+        this.company_email = p.getCompany_email();
+        this.personal_email = p.getPersonal_email();
+        this.city = p.getCity();
+        this.active = p.getActive();
+        this.created_date = p.getCreated_date();
+        this.imagen_url = p.getImagen_url();
+        this.termination_date = p.getTermination_date();
+    }
 
 }

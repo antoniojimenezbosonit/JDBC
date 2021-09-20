@@ -1,6 +1,7 @@
 package com.formacion.bosonit.JDBC.service;
 
 
+import com.formacion.bosonit.JDBC.model.DTO.PersonInputDTO;
 import com.formacion.bosonit.JDBC.model.Person;
 import com.formacion.bosonit.JDBC.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,9 @@ public class PersonService {
     public PersonService(PersonRepository personRepository){
         this.personRepository = personRepository;
     }
-    public List<Person> getAllPerson(){
 
+
+    public List<Person> getAllPerson(){
         List<Person> p = new ArrayList<>();
         p = personRepository.findAll();
         return p;

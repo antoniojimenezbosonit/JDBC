@@ -1,12 +1,14 @@
 package com.formacion.bosonit.JDBC.controller;
 
+import com.formacion.bosonit.JDBC.model.DTO.PersonInputDTO;
+import com.formacion.bosonit.JDBC.model.DTO.PersonOutputDTO;
 import com.formacion.bosonit.JDBC.model.Person;
 import com.formacion.bosonit.JDBC.service.PersonService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -18,53 +20,46 @@ public class PersonController {
     }
 
     @GetMapping()
-    public List<Person> getAllPerson(){
+    public List<PersonOutputDTO> getAllPerson(){
         List<Person> personList= new ArrayList<>();
         personList = personService.getAllPerson();
-
-        return personList;
+        List<PersonOutputDTO> personOutputDTOList = new ArrayList<>();
+        personList.stream().forEach((l) -> {
+            PersonOutputDTO pDTP = new PersonOutputDTO(l);
+            personOutputDTOList.add(pDTP);
+        });
+        return personOutputDTOList;
     }
 
-    @GetMapping("nueva")
-    public void newPerson(){
-        Person p = new Person();
-        p.setUser("antonio");
-        p.setPassword("12345");
-        p.setName("antonio");
-        p.setSurname("jimenez");
-        p.setCompany_email("antonio@bosonit.com");
-        p.setPersonal_email("antonio@gmail.com");
-        p.setCity("Jaen");
-        p.setActive(true);
-        p.setCreated_date(new Date(2000,01,01 ));
-        p.setImagen_url("imagen");
-        p.setTermination_date(new Date(2000,01,01));
-
-        personService.createPerson(p);
-    }
 
     @PostMapping()
-    public void addPerson(@RequestBody @Valid Person p){
+    @Transactional(rollbackOn = Exception.class)
+    public PersonOutputDTO addPerson(@RequestBody @Valid PersonInputDTO p){
 
-        personService.createPerson(p);
+        Person person = new Person(p);
+        personService.createPerson(person);
+        PersonOutputDTO personDTO = new PersonOutputDTO(p);
+        return personDTO;
+
     }
 
     @GetMapping("{id_person}")
-    public Person getPersonById(@PathVariable Integer id_person){
+    public PersonOutputDTO getPersonById(@PathVariable Integer id_person){
         Person p = new Person();
         p = personService.getPersonByID(id_person);
-
-        return p;
+        PersonOutputDTO personDTO = new PersonOutputDTO(p);
+        return personDTO;
     }
 
     @GetMapping("/getForUser/{user}")
-    public Person getPersonByUser(@PathVariable String user){
+    public PersonOutputDTO getPersonByUser(@PathVariable String user){
         Person p = new Person();
         p = personService.getPersonByUser(user);
+        PersonOutputDTO personDTO = new PersonOutputDTO(p);
 
-        return p;
+        return personDTO;
     }
-
+    @Transactional(rollbackOn = Exception.class)
     @DeleteMapping("{id}")
     public  String deletePerson(@PathVariable Integer id){
 
@@ -73,9 +68,12 @@ public class PersonController {
     }
 
     @PutMapping
-    public Person updatePerson(@RequestBody @Valid Person person){
+    @Transactional(rollbackOn = Exception.class)
+    public PersonOutputDTO updatePerson(@RequestBody @Valid PersonInputDTO p){
+        Person person = new Person(p);
         personService.updatePerson(person);
-        return person;
+        PersonOutputDTO personDTO = new PersonOutputDTO(p);
+        return personDTO;
 
     }
 
