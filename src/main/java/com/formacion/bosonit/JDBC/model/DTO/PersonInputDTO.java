@@ -15,9 +15,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class PersonInputDTO {
 
-    @Id
-    @GeneratedValue
-    Integer id_person;
     String name;
     String surname;
     String user;

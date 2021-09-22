@@ -45,7 +45,6 @@ public class Person {
     Date termination_date;
 
     public Person(PersonInputDTO p){
-        this.id_person = p.getId_person();
         this.user = p.getUser();
         this.password = p.getPassword();
         this.name = p.getName();
