@@ -45,17 +45,23 @@ public class Person {
     Date termination_date;
 
     public Person(PersonInputDTO p){
-        this.user = p.getUser();
-        this.password = p.getPassword();
-        this.name = p.getName();
-        this.surname = p.getSurname();
-        this.company_email = p.getCompany_email();
-        this.personal_email = p.getPersonal_email();
-        this.city = p.getCity();
-        this.active = p.getActive();
-        this.created_date = p.getCreated_date();
-        this.imagen_url = p.getImagen_url();
-        this.termination_date = p.getTermination_date();
+        setPerson(p);
+    }
+
+    public void setPerson(PersonInputDTO p){
+        if(p == null)
+            return ;
+        if(p.getUser() != null) this.user = p.getUser();
+        if(p.getPassword() != null) this.password = p.getPassword();
+        if(p.getName() != null) this.name = p.getName();
+        if(p.getSurname() != null) this.surname = p.getSurname();
+        if(p.getCompany_email() != null) this.company_email = p.getCompany_email();
+        if(p.getPersonal_email() != null) this.personal_email = p.getPersonal_email();
+        if(p.getCity() != null) this.city = p.getCity();
+        if(p.getActive() != null) this.active = p.getActive();
+        if(p.getCreated_date() != null) this.created_date = p.getCreated_date();
+        if(p.getImagen_url() != null) this.imagen_url = p.getImagen_url();
+        if(p.getTermination_date() != null) this.termination_date = p.getTermination_date();
     }
 
 }

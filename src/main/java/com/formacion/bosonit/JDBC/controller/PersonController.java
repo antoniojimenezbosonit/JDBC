@@ -55,11 +55,11 @@ public class PersonController {
         return "persona borrada";
     }
 
-    @PutMapping
+    @PutMapping("{id}")
     @Transactional(rollbackOn = Exception.class)
-    public PersonOutputDTO updatePerson(@RequestBody Person p){
+    public PersonOutputDTO updatePerson(@PathVariable Integer id, @RequestBody PersonInputDTO p){
 
-           return personServiceUseCase.updatePerson(p);
+           return personServiceUseCase.updatePerson(id, p);
     }
 
 

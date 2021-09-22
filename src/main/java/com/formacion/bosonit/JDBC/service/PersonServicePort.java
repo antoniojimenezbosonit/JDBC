@@ -12,6 +12,6 @@ public interface PersonServicePort {
     List<PersonOutputDTO> getPersonByUser(String user);
     PersonOutputDTO createPerson(PersonInputDTO p);
     void deletePerson(Integer id);
-    PersonOutputDTO updatePerson(Person person);
+    PersonOutputDTO updatePerson(Integer id, PersonInputDTO person);
     void validation(Person person);
 }

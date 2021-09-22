@@ -68,32 +68,21 @@ public class PersonServiceUseCase implements PersonServicePort {
 
     public void deletePerson(Integer id){
         try {
+            personRepository.findById(id).orElseThrow(() -> new RuntimeException("Persona no encontrada"));
             personRepository.deleteById(id);
         }catch (NoSuchElementException e){
             throw new NotFoundException("error");
         }
     }
 
-    public PersonOutputDTO updatePerson(Person person){
+    public PersonOutputDTO updatePerson(Integer id, PersonInputDTO person){
 
-        validation(person);
-        PersonOutputDTO personSaved = getPersonByID(person.getId_person());
-
-        personSaved.setTermination_date(person.getTermination_date());
-        personSaved.setPersonal_email(person.getPersonal_email());
-        personSaved.setSurname(person.getSurname());
-        personSaved.setPassword(person.getPassword());
-        personSaved.setName(person.getName());
-        personSaved.setUser(person.getUser());
-        personSaved.setImagen_url(person.getImagen_url());
-        personSaved.setCreated_date(person.getCreated_date());
-        personSaved.setCity(person.getCity());
-        personSaved.setCompany_email(person.getCompany_email());
-
+        PersonOutputDTO personSaved = new PersonOutputDTO();
         try{
-
-            personRepository.save(person);
-
+            Person person1 = personRepository.findById(id).orElseThrow(() -> new RuntimeException("Persona no encontrada"));
+            person1.setPerson(person);
+            personRepository.save(person1);
+            personSaved = new PersonOutputDTO(person1);
         }catch (NoSuchElementException e){
             throw new NotFoundException("error");
         }
