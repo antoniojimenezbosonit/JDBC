@@ -3,10 +3,10 @@ package com.formacion.bosonit.JDBC.controller;
 import com.formacion.bosonit.JDBC.model.DTO.PersonInputDTO;
 import com.formacion.bosonit.JDBC.model.DTO.PersonOutputDTO;
 import com.formacion.bosonit.JDBC.model.Person;
+import com.formacion.bosonit.JDBC.service.PersonServicePort;
 import com.formacion.bosonit.JDBC.service.PersonServiceUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +16,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PersonController {
 
-    PersonServiceUseCase personServiceImpl;
+    PersonServicePort personServiceUseCase;
 
     @GetMapping
     public List<PersonOutputDTO> getAllPerson(){
         List<Person> personList= new ArrayList<>();
-        personList = personServiceImpl.getAllPerson();
+        personList = personServiceUseCase.getAllPerson();
         return personList.stream()
                 .map( l -> new PersonOutputDTO(l))
                 .collect(Collectors.toList());
@@ -32,18 +32,18 @@ public class PersonController {
     @Transactional(rollbackOn = Exception.class)
     public PersonOutputDTO addPerson(@RequestBody PersonInputDTO p){
 
-        return personServiceImpl.createPerson(p);
+        return personServiceUseCase.createPerson(p);
     }
 
     @GetMapping("{id_person}")
     public PersonOutputDTO getPersonById(@PathVariable Integer id_person) {
 
-        return personServiceImpl.getPersonByID(id_person);
+        return personServiceUseCase.getPersonByID(id_person);
     }
 
     @GetMapping("/getForUser/{user}")
     public List<PersonOutputDTO> getPersonByUser(@PathVariable String user){
-            return personServiceImpl.getPersonByUser(user);
+            return personServiceUseCase.getPersonByUser(user);
     }
 
 
@@ -51,7 +51,7 @@ public class PersonController {
     @DeleteMapping("{id}")
     public  String deletePerson(@PathVariable Integer id){
 
-        personServiceImpl.deletePerson(id);
+        personServiceUseCase.deletePerson(id);
         return "persona borrada";
     }
 
@@ -59,7 +59,7 @@ public class PersonController {
     @Transactional(rollbackOn = Exception.class)
     public PersonOutputDTO updatePerson(@RequestBody Person p){
 
-           return personServiceImpl.updatePerson(p);
+           return personServiceUseCase.updatePerson(p);
     }
 
 
